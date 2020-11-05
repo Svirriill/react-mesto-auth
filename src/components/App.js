@@ -35,7 +35,7 @@ function App() {
 
   const history = useHistory();
 
-  function handleInfoTooltip(login) { 
+  function handleInfoTooltip(login) {
     login ? setLoggedIn(true) : setLoggedIn(false);
     setIsOpenPopupInfoTooltip(true);
   }
@@ -143,18 +143,19 @@ function App() {
       .finally(() => setLoading(false));
   }
 
-    const handleRegister = (password, email) => {
-      auth
-    .register(password, email)
+  const handleRegister = (password, email) => {
+    auth
+      .register(password, email)
       .then((res) => {
-        if (res.statusCode === 200) {
           history.push('/sign-in');
           handleInfoTooltip(true);
-        }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        handleInfoTooltip(false);
+        console.error('400 - некорректно заполнено одно из полей')
+      });
   }
-  
+
   const handleLogin = (password, email) => {
     auth
       .login(password, email)
@@ -237,7 +238,8 @@ function App() {
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
-          isLoading={isLoading} />
+          isLoading={isLoading} 
+          />
         <ConfirmDelete
           isOpen={isConfirmPopupOpen}
           onClose={closeAllPopups}

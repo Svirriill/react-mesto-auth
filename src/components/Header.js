@@ -1,7 +1,5 @@
 import React from 'react';
 import logo from "../images/Vector.svg";
-// import { BrowserRouter, Route, Switch, useHistory, Link } from 'react-router-dom';
-// import * as auth from './auth';
 
 function Header() {
     // const [email, setEmail] = React.useState('');
