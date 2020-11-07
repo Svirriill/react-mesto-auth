@@ -9,9 +9,9 @@ export const register = (password, email) => {
         },
         body: JSON.stringify({ password, email })
     })
-        .then((res) => {
+        .then(res => {
             if (res.status === 400) {
-                res.send({ message: '400 - некорректно заполнено одно из полей' });
+                res.send({ message: 'Некорректно заполнено одно из полей' });
             }
             return res.json()
         })
@@ -33,15 +33,15 @@ export const login = (password, email) => {
         },
         body: JSON.stringify({ password, email })
     })
-        .then((res => {
+        .then(res => {
             if (res.status === 400) {
-                res.send({ message: '400 - не передано одно из полей' });
+                res.send({ message: 'Не передано одно из полей' });
             }
             if (res.status === 401) {
-                res.send({ message: '401 - Данные переданы с ошибкой или не полностью' });
+                res.send({ message: 'Пользователь с email не найден' });
             }
             return res.json();
-        })
+        }
         )
         .then((data) => {
             if (data.token) {
@@ -63,4 +63,4 @@ export const getContent = (token) => {
     })
         .then(res => res.json())
         .then(data => data)
-}
+};

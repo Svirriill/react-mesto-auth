@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/api.js';
 import EditProfilePopup from './EditProfilePopup';
@@ -24,7 +24,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [isInfoTooltipPopupOpen, setIsOpenPopupInfoTooltip] = React.useState(false); //!
+  const [isInfoTooltipPopupOpen, setIsOpenPopupInfoTooltip] = React.useState(false);
   const [isLoading, setLoading] = React.useState();
   const [selectedCard, setSelectedCard] = React.useState({
     isImageOpen: false,
@@ -147,12 +147,11 @@ function App() {
     auth
       .register(password, email)
       .then((res) => {
-          history.push('/sign-in');
-          handleInfoTooltip(true);
+        history.push('/sign-in');
+        handleInfoTooltip(true);
       })
       .catch((err) => {
         handleInfoTooltip(false);
-        console.error('400 - некорректно заполнено одно из полей')
       });
   }
 
@@ -160,17 +159,14 @@ function App() {
     auth
       .login(password, email)
       .then((data) => {
-        if (!data) {
-          throw new Error('Что-то пошло не так!');
-        }
         if (data.token) {
           setLoggedIn(true);
+          handleInfoTooltip(true);
           history.push('/');
         }
       })
       .catch((err) => {
         handleInfoTooltip(false);
-        console.error('Что-то пошло не так')
       });
   }
 
@@ -196,12 +192,11 @@ function App() {
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
-        <BrowserRouter>
-          <Switch>
-            <ProtectedRoute
-              exact path="/"
-              loggedIn={loggedIn}
-              component={Main, Footer}
+        <Switch>
+          <ProtectedRoute
+            exact path="/"
+            loggedIn={loggedIn}>
+            <Main
               cards={cards}
               onCardClick={handleCardClick}
               onCardLike={handleCardLike}
@@ -211,18 +206,18 @@ function App() {
               onEditAvatar={handleEditAvatarClick}
               handleCardClick={handleCardClick}
             />
-            <Route path="/sign-up">
-              <Register onRegister={handleRegister} />
-            </Route>
-            <Route path="/sign-in">
-              <Login onLogin={handleLogin} />
-            </Route>
-            <Route>
-              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
-            </Route>
-          </Switch>
-        </BrowserRouter>
-        {/* <Footer /> */}
+            <Footer />
+          </ProtectedRoute>
+          <Route path="/sign-up">
+            <Register onRegister={handleRegister} />
+          </Route>
+          <Route path="/sign-in">
+            <Login onLogin={handleLogin} />
+          </Route>
+          <Route>
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+          </Route>
+        </Switch>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
@@ -238,8 +233,8 @@ function App() {
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
-          isLoading={isLoading} 
-          />
+          isLoading={isLoading}
+        />
         <ConfirmDelete
           isOpen={isConfirmPopupOpen}
           onClose={closeAllPopups}

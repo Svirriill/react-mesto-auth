@@ -43,9 +43,10 @@ const Register = (props) => {
                 onChange={evt => setPassword(evt.target.value)}
                 required />
             <button className="login__button" type="submit">Зарегистрироваться</button>
-            <p className="login__link-href"> Уже зарегистрированы?
+            <Link className="login__link-href" to="/sign-in"> Уже зарегистрированы?</Link>
+            {/* <p className="login__link-href"> Уже зарегистрированы? */}
             <Link className="login__link" to="/sign-in"> Войти</Link>
-            </p>
+            {/* </p> */}
         </form>
     )
 }
