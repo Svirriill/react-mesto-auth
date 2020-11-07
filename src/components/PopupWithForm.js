@@ -10,7 +10,8 @@ function PopupWithForm(props) {
         <h3 className="popup__title">{title}</h3>
         <form className={`popup__form popup__form_${name}`} action="#" onSubmit={onSubmit}>
           {children}
-          <button className="popup__button" type="submit" disabled={disabled}>{isLoading ? `Сохранение...` : submit}</button>
+          <button className={`popup__button ${disabled && 'popup__button_inactive'
+      }`} type="submit" disabled={disabled}>{isLoading ? `Сохранение...` : submit}</button>
           <button className="popup__button-esc" type="button">
             <img src={esc} alt="кнопка закрытия окна редиктирования" onClick={onClose}
               className="popup__esc" />

@@ -21,9 +21,8 @@ function Main(props) {
   return (
     <div className="main">
       <section className="profile">
-        <div className="profile__image-container">
+        <div className="profile__image-container" onClick={onEditAvatar} >
           <img className="profile__image" src={currentUser.avatar}
-            onClick={onEditAvatar}
             alt="Аватар" />
         </div>
 

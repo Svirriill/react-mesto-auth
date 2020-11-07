@@ -150,7 +150,7 @@ function App() {
         history.push('/sign-in');
         handleInfoTooltip(true);
       })
-      .catch((err) => {
+      .catch((res) => {
         handleInfoTooltip(false);
       });
   }
@@ -165,7 +165,7 @@ function App() {
           history.push('/');
         }
       })
-      .catch((err) => {
+      .catch((res) => {
         handleInfoTooltip(false);
       });
   }

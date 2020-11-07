@@ -53,9 +53,9 @@ function EditAvatarPopup(props) {
                     placeholder='Ссылка на аватар'
                     required
                 />
-                <span className={`popup__input-error ${
-            !urlValid && 'popup__input-error_active'
-          }`} id='url-error'>{urlError}</span>
+                <span className={`popup__input-error ${!urlValid && 'popup__input-error_active'
+                    }`} id='url-error'>{urlError}
+                </span>
             </label>
         </PopupWithForm>
     )
