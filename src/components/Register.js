@@ -44,9 +44,7 @@ const Register = (props) => {
                 required />
             <button className="login__button" type="submit">Зарегистрироваться</button>
             <Link className="login__link-href" to="/sign-in"> Уже зарегистрированы?</Link>
-            {/* <p className="login__link-href"> Уже зарегистрированы? */}
             <Link className="login__link" to="/sign-in"> Войти</Link>
-            {/* </p> */}
         </form>
     )
 }

@@ -150,8 +150,9 @@ function App() {
         history.push('/sign-in');
         handleInfoTooltip(true);
       })
-      .catch((res) => {
+      .catch((err) => {
         handleInfoTooltip(false);
+        console.log(err);
       });
   }
 
@@ -165,9 +166,10 @@ function App() {
           history.push('/');
         }
       })
-      .catch((res) => {
+      .catch((err) => {
         handleInfoTooltip(false);
-      });
+        console.log(err);
+      })
   }
 
   const tokenCheck = () => {
@@ -180,80 +182,83 @@ function App() {
             history.push('/');
           }
         })
-        .catch(err => console.error(err));
-    }
+        .catch(err => {
+          handleInfoTooltip(false);
+          console.log(err);
+        });
+}
   }
 
-  React.useEffect(() => {
-    tokenCheck();
-  }, []);
+React.useEffect(() => {
+  tokenCheck();
+}, []);
 
-  return (
-    <div className="page">
-      <CurrentUserContext.Provider value={currentUser}>
-        <Header />
-        <Switch>
-          <ProtectedRoute
-            exact path="/"
-            loggedIn={loggedIn}>
-            <Main
-              cards={cards}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              handleCardClick={handleCardClick}
-            />
-            <Footer />
-          </ProtectedRoute>
-          <Route path="/sign-up">
-            <Register onRegister={handleRegister} />
-          </Route>
-          <Route path="/sign-in">
-            <Login onLogin={handleLogin} />
-          </Route>
-          <Route>
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
-          </Route>
-        </Switch>
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-          isLoading={isLoading}
-        />
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddPlace={handleAddPlace}
-        />
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-          isLoading={isLoading}
-        />
-        <ConfirmDelete
-          isOpen={isConfirmPopupOpen}
-          onClose={closeAllPopups}
-          onConfirmDelete={handleConfirm}
-        />
-        <ImagePopup
-          name={selectedCard.name}
-          link={selectedCard.link}
-          onClose={closeAllPopups}
-          isOpen={selectedCard.isImageOpen}
-        />
-        <InfoTooltip
-          isOpen={isInfoTooltipPopupOpen}
-          onClose={closeAllPopups}
-          loggedIn={loggedIn}
-        />
-      </CurrentUserContext.Provider >
-    </div>
-  );
+return (
+  <div className="page">
+    <CurrentUserContext.Provider value={currentUser}>
+      <Header />
+      <Switch>
+        <ProtectedRoute
+          exact path="/"
+          loggedIn={loggedIn}>
+          <Main
+            cards={cards}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            handleCardClick={handleCardClick}
+          />
+          <Footer />
+        </ProtectedRoute>
+        <Route path="/sign-up">
+          <Register onRegister={handleRegister} />
+        </Route>
+        <Route path="/sign-in">
+          <Login onLogin={handleLogin} />
+        </Route>
+        <Route>
+          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+        </Route>
+      </Switch>
+      <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser}
+        isLoading={isLoading}
+      />
+      <AddPlacePopup
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+        onAddPlace={handleAddPlace}
+      />
+      <EditAvatarPopup
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+        onUpdateAvatar={handleUpdateAvatar}
+        isLoading={isLoading}
+      />
+      <ConfirmDelete
+        isOpen={isConfirmPopupOpen}
+        onClose={closeAllPopups}
+        onConfirmDelete={handleConfirm}
+      />
+      <ImagePopup
+        name={selectedCard.name}
+        link={selectedCard.link}
+        onClose={closeAllPopups}
+        isOpen={selectedCard.isImageOpen}
+      />
+      <InfoTooltip
+        isOpen={isInfoTooltipPopupOpen}
+        onClose={closeAllPopups}
+        loggedIn={loggedIn}
+      />
+    </CurrentUserContext.Provider >
+  </div>
+);
 }
 
 export default App;
