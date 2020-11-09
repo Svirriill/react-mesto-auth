@@ -11,15 +11,17 @@ export const register = (password, email) => {
     })
         .then(res => {
             if (!res.ok) {
-                return Promise.reject({
-                    status: 400,
-                    message: 'Некорректно заполнено одно из полей'
-                })
+                return Promise.reject(res.status)
             }
             return res.json()
         })
-        .then((res) => {
-            return res;
+        .then((data) => {
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                return data;
+            } else {
+                return;
+            }
         })
 };
 
@@ -33,17 +35,7 @@ export const login = (password, email) => {
     })
         .then(res => {
             if (!res.ok) {
-                if (res.status === 400) {
-                    return Promise.reject({
-                        status: 400,
-                        message: 'Не передано одно из полей'
-                    })
-                } else if (res.status === 401) {
-                    return Promise.reject({
-                        status: 401,
-                        message: 'Пользователь с таким email не найден'
-                    })
-                }
+                return Promise.reject(res.status)
             }
             return res.json()
                 .then((data) => {
@@ -55,27 +47,22 @@ export const login = (password, email) => {
                     }
                 })
         })
-};
+    };
 
-export const getContent = (token) => {
-    return fetch(`${BASE_URL}/users/me`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        }
-    })
-        .then(res => {
-            if (!res.ok) {
-                return Promise.reject({
-                    status: 401,
-                    message: 'Токен не передан или передан не в том формате'
-                }, {
-                    status: 401,
-                    message: 'Переданный токен некорректен'
-                })
+    export const getContent = (token) => {
+        return fetch(`${BASE_URL}/users/me`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             }
-            res.json()
         })
-        .then(data => data)
-};
+            .then(res => {
+                if (!res.ok) {
+                    console.log(res);
+                    return Promise.reject(res.status);
+                }
+                return res.json();
+            })
+            .then(data => data)
+    };
