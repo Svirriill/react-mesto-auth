@@ -191,8 +191,6 @@ function App() {
         .catch(err => {
           handleInfoTooltip(false);
           if (err === 401) {
-            console.log('Токен не передан или передан не в том формате. Статус ошибки: ' + err);
-          } else if (err === 401) {
             console.log('Переданный токен некорректен Статус ошибки: ' + err);
           }
         });
