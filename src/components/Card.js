@@ -4,7 +4,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 function Card(props) {
   const currentUser = React.useContext(CurrentUserContext);
   const { card, onCardClick, onCardLike, onCardDelete } = props;
-  const isOwn = card.owner._id === currentUser._id;
+  const isOwn = card.owner === currentUser._id;
   const cardDeleteButtonClassName = `element__delete ${isOwn && 'element__delete_active'
     }`;
   const isLiked = card.likes.some((i) => i._id === currentUser._id);

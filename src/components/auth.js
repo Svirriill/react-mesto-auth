@@ -1,4 +1,5 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'http://localhost:3000';
+// export const BASE_URL = 'http://api.mestoproject.nomoreparties.xyz/';
 
 export const register = (password, email) => {
     return fetch(`${BASE_URL}/signup`, {
@@ -59,7 +60,6 @@ export const login = (password, email) => {
         })
             .then(res => {
                 if (!res.ok) {
-                    console.log(res);
                     return Promise.reject(res.status);
                 }
                 return res.json();

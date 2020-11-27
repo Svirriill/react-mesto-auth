@@ -17,7 +17,7 @@ function Header() {
             auth.getContent(jwt)
                 .then((res) => {
                     if (res) {
-                        setEmail(res.data.email);
+                        setEmail(res.email);
                     }
                 })
                 .catch(err => console.log(err));

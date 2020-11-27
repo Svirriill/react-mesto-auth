@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import * as auth from './auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/api.js';
 import EditProfilePopup from './EditProfilePopup';
@@ -14,11 +15,10 @@ import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
-import * as auth from './auth';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([]);
+  const [cards, setCards] = React.useState({});
   const [isConfirmPopupOpen, setConfirmPopupOpen] = React.useState(false);
   const [cardToDelete, setCardToDelete] = React.useState({});
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -49,16 +49,22 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  function handleCardLike(cards) {
+    const isLiked = cards.likes.some((i) => i._id === currentUser._id);
     api
-      .changeLikeCardStatus(card._id, !isLiked)
+      .putLike(cards._id, !isLiked)
       .then((newCard) => {
-        const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
+        const newCards = cards.map((c) => (c._id === cards._id ? newCard : c));
         setCards(newCards);
       })
-      .catch((err) => console.log(err));
+      api
+      .deleteLike(cards._id, !isLiked)
+      .then((newCard) => {
+        const newCards = cards.map((c) => (c._id === cards._id ? newCard : c));
+        setCards(newCards);
+      })
   }
+
 
   function handleConfirm() {
     api
@@ -132,10 +138,12 @@ function App() {
   }
 
   function handleAddPlace(card) {
+    console.log(card);
     setLoading(true);
     api
       .postCard(card)
       .then((newCard) => {
+        console.log(newCard);
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
@@ -199,7 +207,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  }, []);
+  }, [loggedIn]);
 
   return (
     <div className="page">
